@@ -1,3 +1,5 @@
+require 'json'
+
 class TreeNode
   VERSION = '1.0.0'
 
@@ -6,6 +8,32 @@ class TreeNode
   def initialize(name, children = [])
     @name = name
     @children = children
+  end
+
+  def TreeNode.from_h(hash)
+    if hash.is_a?(Hash)
+      raw_children = hash.has_key?(:children) ? hash[:children] : []
+      children = raw_children.map{|ch| TreeNode.from_h(ch)}
+      TreeNode.new hash[:name], children
+    else
+      TreeNode.new hash
+    end
+  end
+
+  def TreeNode.from_json(json)
+    hash = JSON.parse json, symbolize_names: true
+    TreeNode.from_h hash
+  end
+
+  def to_h
+    {
+      name: @name,
+      children: @children.map{|node| node.to_h}
+    }
+  end
+
+  def to_json(**kwargs)
+    JSON.generate(to_h, **kwargs)
   end
 
   def render

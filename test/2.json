@@ -1,0 +1,9 @@
+{
+  "name": "root",
+  "children": [
+    {
+      "name": "foo",
+      "children": [ "bar", "baz" ]
+    }
+  ]
+}
