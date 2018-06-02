@@ -10,27 +10,32 @@ Usage = <<EOF
 Usage: #{Program} [options] [dir]
 
 Options:
-  -h, --help                Print this help message and exit
-  -v, --version             Print version information and exit
-  -a, --all                 All files are printed, including hidden files
-  -d, --dir-only            List directories only
+  -h, --help              Print this help message and exit
+  -v, --version           Print version information and exit
+  -a, --all               All files are printed, including hidden files
+  -d, --dir-only          List directories only
+  -f, --full-prefix       Prints the full path prefix for each file
 
 Arguments:
-  dir                       The directory to traverse (Default: .)
+  dir                     The directory to traverse (Default: .)
 EOF
 
 VersionInfo = "#{Program} v#{TreeNode::VERSION}"
 
 def parse_arguments
   opts = GetoptLong.new(
-    ['--help',     '-h', GetoptLong::NO_ARGUMENT],
-    ['--version',  '-v', GetoptLong::NO_ARGUMENT],
-    ['--all',      '-a', GetoptLong::NO_ARGUMENT],
-    ['--dir-only', '-d', GetoptLong::NO_ARGUMENT],
+    ['--help',        '-h', GetoptLong::NO_ARGUMENT],
+    ['--version',     '-v', GetoptLong::NO_ARGUMENT],
+    ['--all',         '-a', GetoptLong::NO_ARGUMENT],
+    ['--dir-only',    '-d', GetoptLong::NO_ARGUMENT],
+    ['--full-prefix', '-f', GetoptLong::NO_ARGUMENT],
   )
 
-  show_all = false
-  dir_only = false
+  args = {
+    show_all: false,
+    dir_only: false,
+    full_prefix: false,
+  }
 
   begin
     opts.each do |opt, arg|
@@ -42,24 +47,22 @@ def parse_arguments
           puts VersionInfo
           exit 0
         when '--all'
-          show_all = true
+          args[:show_all] = true
         when '--dir-only'
-          dir_only = true
+          args[:dir_only] = true
+        when '--full-prefix'
+          args[:full_prefix] = true
       end
     end
   rescue GetoptLong::Error
     exit 1
   end
 
-  return {
-    show_all: show_all,
-    dir_only: dir_only,
-    arguments: ARGV,
-  }
+  args
 end
 
 def get_tree_node(path, **kwargs)
-  name = File.basename(path)
+  name = kwargs[:full_prefix] ? path : File.basename(path)
   if File.directory?(path)
     children = []
     Dir.new(path).each do |entry|
@@ -76,6 +79,6 @@ def get_tree_node(path, **kwargs)
 end
 
 args = parse_arguments
-dir = args.delete(:arguments).first || '.'
+dir = ARGV.first || '.'
 tree = get_tree_node(dir, **args)
 tree.print
