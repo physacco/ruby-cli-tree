@@ -1,7 +1,7 @@
 require 'json'
 
 class TreeNode
-  VERSION = '1.0.0'
+  VERSION = '1.1.0'
 
   attr_accessor :name, :children
 
