@@ -24,12 +24,12 @@ gem install cli-tree
 
 **TreeNode** methods:
 * `initialize(name, children = [])`
-* `TreeNode.from_h(hash)`
-* `TreeNode.from_json(json)`
-* `to_h`
-* `to_json(**kwargs)`
-* `render`
-* `print(stream: STDOUT, prefix: '')`
+* `TreeNode.from_h(hash)`: hash is `{name: "string", children: [hash1, ...]}`
+* `TreeNode.from_json(json)`: similar to `from_h`
+* `to_h`: convert TreeNode to Hash
+* `to_json(**kwargs)`: kwargs refer to [JSON#generate](http://ruby-doc.org/stdlib-2.0.0/libdoc/json/rdoc/JSON.html#method-i-generate)
+* `render`: draw an ASCII tree graph
+* `print(stream: STDOUT, prefix: '')`: puts the rendered text to a stream
 
 ## Example
 
@@ -75,5 +75,5 @@ Output:
 root
 └── foo
     ├── bar
-   └── baz
+    └── baz
 ```
