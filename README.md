@@ -17,9 +17,9 @@ gem install cli-tree
 ## Usage
 
 1. `require 'cli-tree'`
-2. Create a TreeNode: `tree = TreeNode.new(node_name, children = [])`
-3. Add more TreeNode objects to `children`: `tree.children << child_node`
-4. Add more TreeNode objects to `child_node`, and so on.
+2. Create a **TreeNode**: `tree = TreeNode.new(node_name, children = [])`
+3. Add more **TreeNode** objects to `children`: `tree.children << child_node`
+4. Add more **TreeNode** objects to `child_node`, and so on.
 5. Call `puts tree.render` or `tree.print` to print the tree.
 
 ## Example
